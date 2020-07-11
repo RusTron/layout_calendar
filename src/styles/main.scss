@@ -1,3 +1,48 @@
-body {
+$side: 100px;
+$days: ("mon": 0, "tue": 1, "wed": 2, "thu": 3, "fri": 4, "sat": 5, "san": 6);
+$gap: 1px;
+$transitionTime: 0.5s;
+
+* {
   margin: 0;
+  box-sizing: border-box;
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 707px;
+  height: auto;
+  margin-top: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  color: #000;
+
+  @each $day, $count in $days {
+    @for $monthLength from 28 through 31 {
+      &.calendar-#{$monthLength} :nth-child(-n+#{$monthLength}) {
+        display: flex;
+        flex: 0 0 $side;
+        background-color: #eee;
+        height: $side;
+        border: 1px solid black;
+        margin: $gap $gap 0 0;
+        transition: background-color $transitionTime, transform $transitionTime;
+        justify-content: center;
+        line-height: $side;
+      }
+      &.calendar-#{$monthLength} :nth-child(-n+#{$monthLength}):hover {
+        background-color: pink;
+        transform: translate(0, -20px);
+      }
+      @for $i from 1 through $monthLength {
+        &.calendar-#{$monthLength} :nth-child(#{$i}):before {
+          content: "#{$i}";
+        }
+      }
+      &.calendar-#{$day}.calendar-#{$monthLength} :first-child {
+        margin-left: $count+($count*$side);
+      }
+    }
+  }
 }
